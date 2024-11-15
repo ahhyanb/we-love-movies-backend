@@ -1,16 +1,14 @@
 function asyncErrorBoundary(delegate, defaultStatus) {
-    // Return a new function that takes request, response, and next as arguments
-    return function(request, response, next) {
-      // Create a Promise and try to run the delegate function
-      try {
-        delegate(request, response, next);
-      } catch (error) {
-        // If an error happens, use defaultStatus if available
-        const status = error.status; //or defaultStatus;
-        const message = error.message;
-        // Pass the error details to Express
-        next({ status, message });
-      }
-    }
-  }
-  
+    return (request, response, next) => {
+        Promise.resolve()
+            .then(() => delegate(request, response, next))
+            .catch((error = {}) => {
+                // Ensure status and message are correctly set
+                const status = error.status || defaultStatus || 500; // Default to 500 if no status is provided
+                const message = error.message || "An unknown error occurred."; // Default error message
+                next({ status, message });
+            });
+    };
+}
+
+module.exports = asyncErrorBoundary;

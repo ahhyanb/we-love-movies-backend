@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 
 // error handlers
-const generalErrorHandler = require("../errors/generalErrorHandler");
 const methodNotAllowed = require("../errors/methodNotAllowed"); 
 
 router.route("/")
@@ -12,4 +11,6 @@ router.route("/")
 router.route("/:movieId")
     .get(controller.read);
 
+
+ 
 module.exports = router;

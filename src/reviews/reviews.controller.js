@@ -3,7 +3,8 @@ const asyncErrorBoundary = require("..//errors/asyncErrorBoundary");
 
 async function reviewIdExists(req, res, next){
     const { reviewId } = req.params;
-    const result = await service.reviewIdExists(reviewId);
+    const review = await service.reviewIdExists(reviewId);
+    res.locals.review = review;
     return result
         ? next() 
         : next({ status: 404, error: "Review cannot be found" });

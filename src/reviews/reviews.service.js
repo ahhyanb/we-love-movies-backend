@@ -17,8 +17,16 @@ function reviewIdExists(reviewId) {
         .first(); // only returns the first result
 }
 
+
+function update(updateReview) {
+    return knex("review")
+        .where({ review_id: updateReview.review_id }) // find the matching review_id to update
+        .update(updateReview, "*"); // then pass the updatedReview to update and return the row
+}
+
 module.exports = {
     list, 
     destroy,
     reviewIdExists,
+    update,
 }

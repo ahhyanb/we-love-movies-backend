@@ -7,15 +7,15 @@ async function list(req, res, next) {
     res.json({ data });
 }
 
-async function read(req, res, next) {
+async function listByMovieId(req, res, next) {
     const { movieId } = req.params;
-    const data = await service.read(movieId);
+    const data = await service.listByMovieId(movieId);
     res.json({ data });
 }
 
 async function validateMovieId(req, res, next) {
     const { movieId } = req.params;
-    const movie = await service.read(movieId)
+    const movie = await service.listByMovieId(movieId)
     if (movie) {
         res.locals.movie = movie;
         return next()
@@ -24,8 +24,23 @@ async function validateMovieId(req, res, next) {
 }
 
 
+async function listTheaters(req, res, next) {
+    const { movieId } = req.params;
+    const data = await service.listTheatersByMovieId(movieId);
+    res.json({ data: data || [] }); // Ensure data is always an array
+  }
+
+  async function listReviews(req, res, next) {
+    const { movieId } = req.params;
+    const data = await service.listReviewsByMovieId(movieId);
+    res.json({ data: data || [] }); // Ensure data is always an array
+  }
+  
+
 module.exports = {  
     list: asyncErrorBoundary(list),
-    read: [ asyncErrorBoundary(validateMovieId), read ],
+    listByMovieId: [asyncErrorBoundary(validateMovieId), asyncErrorBoundary(listByMovieId)],
+    listTheaters: [asyncErrorBoundary(validateMovieId), asyncErrorBoundary(listTheaters)],
+    listReviews: [asyncErrorBoundary(validateMovieId), asyncErrorBoundary(listReviews)],
     
 }

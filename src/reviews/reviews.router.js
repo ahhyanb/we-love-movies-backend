@@ -9,6 +9,7 @@ router.route("/")
     .all(methodNotAllowed);
 
 router.route("/:reviewId")
+    .put(controller.update)
     .delete(controller.delete)
     .all(methodNotAllowed);
 

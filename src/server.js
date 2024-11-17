@@ -1,14 +1,14 @@
-const { PORT = 5000 } = process.env;
+const { PORT = 5000 } = process.env; // Use the PORT environment variable or default to 5000
 const app = require("./app");
 const knex = require("./db/connection");
 
-const listener = () => console.log(`Listening on Port ${PORT}!`);
+// Start the server and bind to the PORT
+const listener = () => console.log(`Listening on port ${PORT}!`);
 
-// Ensure knex runs migrations and then starts the server
 knex.migrate
   .latest()
   .then((migrations) => {
     console.log("migrations", migrations);
-    app.listen(PORT, listener); // Bind to the PORT environment variable
+    app.listen(PORT, "0.0.0.0", listener); // Bind to 0.0.0.0 to listen for external requests
   })
   .catch(console.error);

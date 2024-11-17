@@ -8,24 +8,20 @@ const moviesRouter = require("./movies/movies.router");
 const theatersRouter = require("./theaters/theaters.router");
 const reviewsRouter = require("./reviews/reviews.router");
 
-// error handler
+// error handlers
 const generalErrorHandler = require("./errors/generalErrorHandler");
 const notFound = require("./errors/notFound");
 
-// cors
 app.use(cors());
+app.use(express.json());
 
-app.use(express.json())
 // routes
 app.use("/movies", moviesRouter);
-
 app.use("/theaters", theatersRouter);
-
 app.use("/reviews", reviewsRouter);
 
-// handles error
-app.use(generalErrorHandler);
+// error handlers
 app.use(notFound);
-
+app.use(generalErrorHandler);
 
 module.exports = app;
